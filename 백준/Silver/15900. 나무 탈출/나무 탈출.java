@@ -25,11 +25,6 @@ public class Main {
 		}
 		
 		
-		// 리프노드에서 1로 가능 단방향 그래프 그리기
-		List<Integer>[] graph = new ArrayList[n+1];
-		for(int i=0; i<=n; i++) 
-			graph[i] = new ArrayList<>();
-		
 		// bfs
 		Queue<int[]> q = new ArrayDeque<>();
 		q.offer(new int[] {1, 0});
@@ -45,7 +40,6 @@ public class Main {
 			
 			for(int nxt : bigraph[now[0]]) {
 				if(dp[nxt] == -1) {
-					graph[nxt].add(now[0]);
 					q.offer(new int[] {nxt, now[1]+1});
 				}
 			}
