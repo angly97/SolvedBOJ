@@ -43,20 +43,6 @@ public class Main {
 			}
 		}
 		
-//		for(int i=0; i<=n; i++) {
-//			System.out.print(i+"번째 사람이 내는 카드: ");
-//			for(int card : cards[i]) {
-//				System.out.print(card+" ");
-//			}
-//			System.out.println();
-//		}
-//		
-//		for(List<Character> o : oper) {
-//			for(Character c1 : o)
-//				System.out.print(c1+" ");
-//			System.out.println();
-//		}
-		
 		
 		// 순열 돌리면서 계산
 		permu(0, -1, new char[10], new boolean[c+1]);
@@ -79,10 +65,9 @@ public class Main {
 	
 	// cnt : 현재까지 사용한 카드 갯수
 	// str : 현재까지 만들어진 문자열
-	// idx : 현재까지 만들어진 문자열의 미자믹 인덱스
-	// visited[i] : 카드 i의 사용 여부
+	// idx : 현재까지 만들어진 문자열의 미지막 인덱스
+	// used[i] : 카드 i의 사용 여부
 	public static void permu(int cnt, int idx, char[] str, boolean[] used) {
-//		System.out.println(cnt+" "+idx+" "+Arrays.toString(str)+" "+Arrays.toString(used));
 
 		// 종료조건 : 더 사용할 카드 없는 경우
 		if(cnt == c) {
@@ -98,35 +83,30 @@ public class Main {
 		}
 		
 		
-		int nxtidx;			// 다음턴에서 문자열의 마지막 인덱스
+		int nxtidx;			// 다음턴에서 문자열 길이 (는 아니고 사실 마지막 인덱스 : 길이-1)
 		int delidx = 0;		// 삭제될 인덱스
 		
 		// 사람 턴
 		turn : for(int person = 1; person <= n; person++) {
-
-
-//			System.out.print("현재 턴인 사람: "+person+" / 남은카드: ");
-//			for(int c : cards[person]) {
-//				System.out.print(c+" ");
-//			}
-//			System.out.println();
 			
-			// 현재 사람이 내는 다음 카드
+			// 현재 사람이 내야할 카드가 없다면 PASS !!!
 			if(cards[person].size() == 0) continue;
 			
+			// 현재 사람이 내야할 카드
 			int nowcard = cards[person].getFirst();
 			
 			// 현재 카드 사용한 적 없을 경우
 			if(!used[nowcard]) {
 				
-				// 다음 턴 문자열
+				// 다음 턴에 사용될 문자열
 				char[] nxtstr = new char[10];
 				for(int i=0; i<=idx; i++)
 					nxtstr[i] = str[i];
 				
+				// 다음턴에 사용될 문자열 길이 초기화
 				nxtidx = idx;
 				
-//				System.out.println("현재 사람 "+person+"이 카드 "+nowcard+"냈음");
+				// 현재 카드 사용 처리
 				used[nowcard] = true;
 				cards[person].pollFirst();
 				
@@ -143,8 +123,6 @@ public class Main {
 						delidx = (int)(op-'0');		// 삭제되는 위치
 						
 						if(nxtidx < delidx) {		// 삭제될 수 없는 위치면 ERROR
-//							System.out.println("에러!!!");
-							
 							words.add("ERROR");
 
 							used[nowcard] = false;
@@ -154,9 +132,6 @@ public class Main {
 						}
 						
 						// delidx 위치의 문자 삭제 : 한 칸씩 당김
-//						if(nxtidx == 10) {
-//							System.out.println(Arrays.toString(nxtstr)+" "+delidx+" "+Arrays.toString(used));
-//						}
 						for(; delidx<nxtidx; delidx++) {
 							nxtstr[delidx] = nxtstr[delidx+1];
 						}
