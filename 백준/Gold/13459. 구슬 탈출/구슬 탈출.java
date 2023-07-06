@@ -15,7 +15,7 @@ public class Main {
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
 		
-		int[] marbles = new int[4];
+		int[] marbles = new int[4];		// {빨간공 행, 빨간공 열, 파란공 행, 파란공 열}
 		
 		board = new char[n][];
 		
@@ -44,6 +44,7 @@ public class Main {
 		Queue<int[]> q = new ArrayDeque<>();
 		q.offer(new int[] {marbles[0], marbles[1], marbles[2], marbles[3]});
 
+		// visited[9451] : 빨간 공 위치 (9, 4), 파란공 위치(5, 1) 인 적 있는지 여부
 		boolean[] visited = new boolean[10000];
 		visited[toCode(marbles)] = true;
 		
@@ -51,19 +52,17 @@ public class Main {
 		
 		int size, round = 0;
 		int[] now, nxt = null;
-		while(round++<=10 && !q.isEmpty()) {
+		while(round++<=10 && !q.isEmpty()) {		// <= 를 <로 써서 틀렸었음;;
 			
 			size = q.size();
 			while(size-->0) {
 				
 				now = q.poll();
 				
-//				System.out.println("\n now: "+Arrays.toString(now)+"\n ---------------");
-				
-				if(board[now[2]][now[3]] == 'O') {
+				if(board[now[2]][now[3]] == 'O') {	// 파란공이 구멍이 골인 => 실패한거니까 패스
 					continue;
 				}
-				else if(board[now[0]][now[1]] == 'O') {
+				else if(board[now[0]][now[1]] == 'O') {	// 파란건 구멍에 안들어갔으면서 빨간것만 들어간 경우 성공!!
 					isPossible = 1;
 					break;
 				}
@@ -71,29 +70,23 @@ public class Main {
 				for(int dir=0; dir<4; dir++) {
 					switch(dir) {
 					case 0:
-//						System.out.println("\n up");
 						nxt = up(now, deltas[dir]);
 						break;
 					case 1:
-//						System.out.println("\n down");
 						nxt = down(now, deltas[dir]);
 						break;
 					case 2:
-//						System.out.println("\n right");
 						nxt = right(now, deltas[dir]);
 						break;
 					case 3:
-//						System.out.println("\n left");
 						nxt = left(now, deltas[dir]);
 						break;
 					}
 					
-//					System.out.println("이동연산 끝. 다음좌표는? "+ Arrays.toString(nxt));
 					
 					int code = toCode(nxt);
 					
 					if(!visited[code]) {
-//						System.out.println("in");
 						visited[code] = true;
 						q.offer(new int[] {nxt[0], nxt[1], nxt[2], nxt[3]});
 					}
@@ -216,30 +209,22 @@ public class Main {
 	}
 	
 	static void move(int[] pos, int r, int c, int[] del, int[] marbles) {
-//		System.out.println("move 들어옴:  pos: "+Arrays.toString(pos)+", r,c : ("+r+" "+c+"), del: "+Arrays.toString(del)+", 구슬들: "+Arrays.toString(marbles));
-		
+
 		pos[r] = marbles[r] + del[0];
 		pos[c] = marbles[c] + del[1];
 		
-//		System.out.println("while 전: "+Arrays.toString(pos)+" "+board[pos[r]][pos[c]]);
-		
 		while(board[pos[r]][pos[c]] == '.' && (pos[r] != marbles[2-r] || pos[c] != marbles[4-c])) {
 
-//			System.out.print(Arrays.toString(pos)+" "+board[pos[r]][pos[c]]+" => ");
 			
 			pos[r] += del[0];
 			pos[c] += del[1];
 			
-
-//			System.out.println(Arrays.toString(pos)+" "+board[pos[r]][pos[c]]);
 		}
 		
 		if(board[pos[r]][pos[c]] != 'O') {
 			pos[r] -= del[0];
 			pos[c] -= del[1];
 		}
-		
-//		System.out.println("move 나간다: "+Arrays.toString(pos));
 	}
 	
 	static int toCode(int[] marbles) {
