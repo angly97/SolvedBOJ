@@ -71,7 +71,7 @@ class Solution {
         return ans;
     }
     
-    // mCnt : 타입별 멘토 숫자
+    // mCnt[i] : 타입i의 멘토 숫자
     public void permu(int type, int k, int[] mCnt, int remain) {
         if(type == k) {
             mCnt[type] = remain;
