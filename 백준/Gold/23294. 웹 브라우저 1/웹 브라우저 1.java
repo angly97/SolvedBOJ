@@ -71,13 +71,13 @@ public class Main {
 					int size = back.size();
 					while(size-->0) {
 						cur = back.pollFirst();
-						if(cur != prev) {
+						if(cur != prev) {			// 이전 페이지랑 다르면, back에 추가
 							back.offerLast(cur);
 						}
-						else {
+						else {						// 이전 페이지랑 같으면, back에 추가 안하고, 캐시 용량에서 제거
 							cache -= cap[cur];
 						}
-						prev = cur;
+						prev = cur;					// 이전 페이지 갱신
 					}
 					break;
 				}
